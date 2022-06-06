@@ -1,0 +1,35 @@
+.App {
+  text-align: center;
+}
+body{
+  background-color: brown;
+
+}
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+.anecdotas{
+  text-align: center;
+  max-width: 700px;
+  width: 80%;
+  margin: auto;
+}
+button{
+  background-color: rgb(165, 71, 71);
+  cursor: pointer;
+  margin: 10px;
+  padding: 10px;
+  border: 2px solid black
+}
+
+#text{
+  display: block;
+  width: 100%;
+}

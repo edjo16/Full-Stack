@@ -1,0 +1,30 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.App {
+  text-align: center;
+}
+body{
+  background-color: #66ac38cb;
+}
+h2{
+  text-align: center;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.data{
+  min-width: 350px;
+  background-color: #67ac38;
+  margin: 10px;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
