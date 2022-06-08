@@ -12,7 +12,6 @@ function App() {
   const [Render, setRender] = useState(false)
   const [filter, setFilter] = useState("")
   const [filterList, setFilterList] = useState([])
-  
   useEffect(() => {
     function getPersons() {
       axios.get("http://localhost:3000/persons")
@@ -22,6 +21,8 @@ function App() {
           setRender(false)
         })
     }
+
+
     getPersons()
     Render && getPersons()
   }, [Render])
@@ -42,22 +43,38 @@ function App() {
 
     if (match[0] !== undefined) {
       const { name, id } = match[0]
-      axios.put(`http://localhost:3000/persons/${id}`, { name: name, number: newPerson.number, id: id })
-        .then(() => setRender(true))
-        .then(() => setNewPerson({ name: "", number: "", id: null }))
-    } else {
+      var answer = window.confirm(` ${name} is already added to the notebook, replace the old number with the new one.`);
+      if (answer) {
+        axios.put(`http://localhost:3000/persons/${id}`, { name: name, number: newPerson.number, id: id })
+          .then(() => setNewPerson({ name: "", number: "", id: null }))
+          .then(() => setRender(true))
+      }
+      else {
+        console.log("cancel")
+      }
+    }
+    else {
       axios.post("http://localhost:3000/persons", newPerson)
         .then(response => setPersons(persons.concat(response.data)))
         .then(() => setNewPerson({ name: "", number: "", id: null }))
     }
+
   }
 
   const handleDelete = (e) => {
     e.preventDefault()
-    const currentItemId = e.target.parentElement.id
-    axios.delete(`http://localhost:3000/persons/${currentItemId}`)
-      .then(() => setRender(true))
-
+    console.log(e.target.parentElement)
+    const currentName = e.target.parentElement.firstChild.lastChild.data
+    var answerDelete = window.confirm(` delete ${currentName} ?`);
+    if (answerDelete) {
+        const currentItemId = e.target.parentElement.id
+        axios.delete(`http://localhost:3000/persons/${currentItemId}`)
+          .then(() => setRender(true))
+      }
+      else {
+        console.log("cancel")
+      }
+    
   }
 
   const submitFilter = (e) => {
@@ -75,14 +92,14 @@ function App() {
       <div className='container'>
         <h1>Phone Book</h1>
         <FilterBy changeFilter={handleChangeFilter} submitFilter={submitFilter} />
-       
+
         <h2>Add a new person</h2>
         <NewPerson newPerson={newPerson} handleChange={handleChange} handleSubmit={handleSubmit} />
         <h2>Numbers</h2>
         {filterList.length > 0
           ? <FilterList filterList={filterList} handleChange={handleChange} />
           : <ListPhone persons={persons} handleDelete={handleDelete} />
-          }
+        }
       </div>
     </div>
   );

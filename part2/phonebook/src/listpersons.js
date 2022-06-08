@@ -1,7 +1,7 @@
 const ListPhone = ({ persons, handleDelete }) => {
 
   const splitName=(name)=>{
-    const caps = name.split(' ').map(item =>item.charAt(0).toUpperCase() + item.slice(1)).join(' ');
+    const caps = name && name.split(' ').map(item =>item.charAt(0).toUpperCase() + item.slice(1)).join(' ');
     return caps
   }
     return (
