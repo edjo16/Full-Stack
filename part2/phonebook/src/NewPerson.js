@@ -5,10 +5,10 @@ const NewPerson=({newPerson,handleChange,handleSubmit})=>{
       
         <form className='form'>
           <label > Name:
-          <input onChange={handleChange} name='name' value={newPerson.name}></input>
+          <input required onChange={handleChange} name='name' value={newPerson.name}></input>
           </label>
           <label> Number:
-          <input onChange={handleChange} name='number' value={newPerson.number}></input>
+          <input required onChange={handleChange} name='number' value={newPerson.number}></input>
           </label>
           <button onClick={handleSubmit}>Add</button>
           

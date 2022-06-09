@@ -5,13 +5,14 @@ import ListPhone from './listpersons';
 import NewPerson from './NewPerson';
 import FilterBy from './filterBy';
 import FilterList from './filterList';
-
+import { Notification } from './components/notification';
 function App() {
   const [persons, setPersons] = useState([])
   const [newPerson, setNewPerson] = useState({ name: "", number: "", id: null })
   const [Render, setRender] = useState(false)
   const [filter, setFilter] = useState("")
   const [filterList, setFilterList] = useState([])
+  const [keyNotification, setKeyNotification]= useState({})
   useEffect(() => {
     function getPersons() {
       axios.get("http://localhost:3000/persons")
@@ -19,6 +20,7 @@ function App() {
           const name = res.data
           setPersons(name)
           setRender(false)
+          setKeyNotification({})
         })
     }
 
@@ -57,19 +59,31 @@ function App() {
       axios.post("http://localhost:3000/persons", newPerson)
         .then(response => setPersons(persons.concat(response.data)))
         .then(() => setNewPerson({ name: "", number: "", id: null }))
+        .then(()=> {
+          setKeyNotification({key:"add", name:newPerson.name})
+          setTimeout(() => {
+            setRender()
+          }, 2000);
+        })
     }
 
   }
 
   const handleDelete = (e) => {
     e.preventDefault()
-    console.log(e.target.parentElement)
     const currentName = e.target.parentElement.firstChild.lastChild.data
     var answerDelete = window.confirm(` delete ${currentName} ?`);
     if (answerDelete) {
         const currentItemId = e.target.parentElement.id
         axios.delete(`http://localhost:3000/persons/${currentItemId}`)
-          .then(() => setRender(true))
+          .then(() => setRender(true))    
+          .catch(() => {
+            setKeyNotification({key:"error", name:currentName})
+            setTimeout(() => {
+              setRender()
+            }, 2000);
+          })    
+          
       }
       else {
         console.log("cancel")
@@ -90,6 +104,7 @@ function App() {
   return (
     <div className="App">
       <div className='container'>
+        <Notification keyNoti={keyNotification}/>
         <h1>Phone Book</h1>
         <FilterBy changeFilter={handleChangeFilter} submitFilter={submitFilter} />
 
